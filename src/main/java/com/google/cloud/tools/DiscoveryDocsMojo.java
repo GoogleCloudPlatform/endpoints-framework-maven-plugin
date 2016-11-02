@@ -67,7 +67,7 @@ public class DiscoveryDocsMojo extends AbstractMojo {
         discoveryDocDir.mkdirs();
       }
       String classpath = Joiner.on(System.getProperty("path.separator")).join(project.getCompileClasspathElements(), classesDir);
-      List<String> params = new ArrayList<String>(Arrays.asList(
+      List<String> params = new ArrayList<>(Arrays.asList(
           GetDiscoveryDocAction.NAME,
           "-o", discoveryDocDir.getPath(),
           "-f", format,
