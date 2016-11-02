@@ -20,7 +20,6 @@ package com.google.cloud.tools;
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GetDiscoveryDocAction;
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -33,6 +32,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class DiscoveryDocsMojo extends AbstractMojo {
         discoveryDocDir.mkdirs();
       }
       String classpath = Joiner.on(System.getProperty("path.separator")).join(project.getCompileClasspathElements(), classesDir);
-      List<String> params = Lists.newArrayList(Arrays.asList(
+      List<String> params = new ArrayList<String>(Arrays.asList(
           GetDiscoveryDocAction.NAME,
           "-o", discoveryDocDir.getPath(),
           "-f", format,
