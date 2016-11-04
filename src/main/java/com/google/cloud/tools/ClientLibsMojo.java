@@ -41,7 +41,7 @@ import org.apache.maven.project.MavenProject;
 public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)
-  MavenProject project;
+  private MavenProject project;
 
   /**
    * Output directory for client libraries
@@ -52,7 +52,10 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
 
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (!clientLibDir.exists()) {
-      clientLibDir.mkdirs();
+      if (!clientLibDir.mkdirs()) {
+        throw new MojoExecutionException(
+            "Failed to create output directory: " + clientLibDir.getPath());
+      }
     }
     try {
       String classpath = Joiner.on(File.pathSeparator)

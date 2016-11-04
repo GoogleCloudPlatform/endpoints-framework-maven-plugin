@@ -17,11 +17,10 @@
 
 package com.google.cloud.tools;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.io.File;
 import java.util.List;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 public abstract class AbstractEndpointsWebAppMojo extends AbstractMojo {
 

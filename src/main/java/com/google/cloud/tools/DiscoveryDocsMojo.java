@@ -20,6 +20,10 @@ package com.google.cloud.tools;
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GetDiscoveryDocAction;
 import com.google.common.base.Joiner;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -27,10 +31,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Goal which generates discovery docs
@@ -40,7 +40,7 @@ import java.util.List;
 public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)
-  MavenProject project;
+  private MavenProject project;
 
   /**
    * Output directory for discovery docs
@@ -58,7 +58,10 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
   public void execute() throws MojoExecutionException {
     try {
       if (!discoveryDocDir.exists()) {
-        discoveryDocDir.mkdirs();
+        if (!discoveryDocDir.mkdirs()) {
+          throw new MojoExecutionException(
+              "Failed to create output directory: " + discoveryDocDir.getPath());
+        }
       }
       String classpath = Joiner.on(File.pathSeparator)
           .join(project.getCompileClasspathElements(), classesDir);
