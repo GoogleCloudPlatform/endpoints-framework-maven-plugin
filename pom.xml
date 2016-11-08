@@ -9,7 +9,6 @@
 
   <name>Endpoints Framework Maven Plugin</name>
 
-  <!-- FIXME change it to the project's website -->
   <url>https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin</url>
 
   <properties>
