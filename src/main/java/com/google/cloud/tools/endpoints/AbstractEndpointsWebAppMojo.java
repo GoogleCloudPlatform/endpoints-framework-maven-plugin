@@ -15,7 +15,7 @@
  *
  */
 
-package com.google.cloud.tools;
+package com.google.cloud.tools.endpoints;
 
 import java.io.File;
 import java.util.List;
