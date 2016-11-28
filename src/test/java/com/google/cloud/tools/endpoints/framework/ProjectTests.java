@@ -20,6 +20,7 @@ package com.google.cloud.tools.endpoints.framework;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.it.util.ResourceExtractor;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class ProjectTests {
 
   @Test
   public void testServerArtifactCreation() throws IOException, VerificationException {
-    File testDir = ResourceExtractor.simpleExtractResources(ProjectTests.class,  "/projects/server");
+    File testDir = ResourceExtractor.simpleExtractResources(ProjectTests.class, "/projects/server");
 
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoals(
@@ -46,5 +47,15 @@ public class ProjectTests {
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent("target/client-libs/testApi-v1-java.zip");
     verifier.assertFilePresent("target/discovery-docs/testApi-v1-rest.discovery");
+  }
+
+  @Test
+  public void testClientGeneratedSourceCreation() throws IOException, VerificationException {
+    File testDir = ResourceExtractor.simpleExtractResources(ProjectTests.class, "/projects/client");
+
+    Verifier verifier = new Verifier(testDir.getAbsolutePath());
+    verifier.executeGoals(Arrays.asList("compile"));
+    verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent("target/generated-sources/endpoints/com/example/testApi/TestApi.java");
   }
 }
