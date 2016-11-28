@@ -15,7 +15,7 @@
  *
  */
 
-package com.google.cloud.tools.endpoints;
+package com.google.cloud.tools.endpoints.framework;
 
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
@@ -41,7 +41,8 @@ public class ProjectTests {
     File testDir = ResourceExtractor.simpleExtractResources(ProjectTests.class,  "/projects/server");
 
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
-    verifier.executeGoals(Arrays.asList("endpoints:clientLibs", "endpoints:discoveryDocs"));
+    verifier.executeGoals(
+        Arrays.asList("endpoints-framework:clientLibs", "endpoints-framework:discoveryDocs"));
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent("target/client-libs/testApi-v1-java.zip");
     verifier.assertFilePresent("target/discovery-docs/testApi-v1-rest.discovery");

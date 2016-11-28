@@ -15,16 +15,17 @@
  *
  */
 
-package com.google.cloud.tools.endpoints;
+package com.google.cloud.tools.endpoints.framework;
 
 import com.google.api.server.spi.tools.EndpointsTool;
-import com.google.api.server.spi.tools.GetDiscoveryDocAction;
+import com.google.api.server.spi.tools.GetClientLibAction;
 import com.google.common.base.Joiner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -33,44 +34,39 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Goal which generates discovery docs
+ * Maven goal to generate client libraries (as zips)
  */
-@Mojo(name = "discoveryDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "clientLibs", requiresDependencyResolution = ResolutionScope.COMPILE)
 @Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
-public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
+public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
   /**
-   * Output directory for discovery docs
+   * Output directory for client libraries
    */
-  @Parameter(defaultValue = "${project.build.directory}/discovery-docs",
-             property = "endpoints.discoveryDocDir", required = true)
-  private File discoveryDocDir;
+  @Parameter(defaultValue = "${project.build.directory}/client-libs",
+             property = "endpoints.clientLibDir", required = true)
+  private File clientLibDir;
 
-  /**
-   * Output format for discovery docs (rest or rpc)
-   */
-  @Parameter(defaultValue = "rest", property = "endpoints.format", required = true)
-  private String format;
-
-  public void execute() throws MojoExecutionException {
-    try {
-      if (!discoveryDocDir.exists()) {
-        if (!discoveryDocDir.mkdirs()) {
-          throw new MojoExecutionException(
-              "Failed to create output directory: " + discoveryDocDir.getPath());
-        }
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    if (!clientLibDir.exists()) {
+      if (!clientLibDir.mkdirs()) {
+        throw new MojoExecutionException(
+            "Failed to create output directory: " + clientLibDir.getPath());
       }
+    }
+    try {
       String classpath = Joiner.on(File.pathSeparator)
           .join(project.getCompileClasspathElements(), classesDir);
 
       List<String> params = new ArrayList<>(Arrays.asList(
-          GetDiscoveryDocAction.NAME,
-          "-o", discoveryDocDir.getPath(),
-          "-f", format,
+          GetClientLibAction.NAME,
+          "-o", clientLibDir.getPath(),
           "-cp", classpath,
+          "-l", "java",
+          "-bs", "maven",
           "-w", webappDir.getPath()));
       if (serviceClasses != null) {
         params.addAll(serviceClasses);
