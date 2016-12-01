@@ -15,7 +15,7 @@
  *
  */
 
-package com.google.cloud.tools;
+package com.google.cloud.tools.endpoints.framework;
 
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GetClientLibAction;
