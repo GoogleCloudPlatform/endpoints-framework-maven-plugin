@@ -15,31 +15,49 @@
  *
  */
 
-package com.google.cloud.tools.endpoints.framework;
+package com.google.cloud.tools.maven.endpoints.framework;
 
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.it.util.ResourceExtractor;
-import org.junit.Assert;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class ProjectTests {
 
+  public static String pluginVersion = null;
+
+  @Rule
+  public TemporaryFolder testRoot = new TemporaryFolder();
+
   @BeforeClass
-  public static void setUp() throws VerificationException {
+  public static void setUp() throws VerificationException, IOException, XmlPullParserException {
     Verifier verifier = new Verifier(".", true);
     verifier.addCliOption("-DskipTests");
     verifier.executeGoal("install");
+
+    MavenXpp3Reader reader = new MavenXpp3Reader();
+    Model model = reader.read(new FileReader("pom.xml"));
+
+    pluginVersion = model.getVersion();
   }
 
   @Test
   public void testServerArtifactCreation() throws IOException, VerificationException {
-    File testDir = ResourceExtractor.simpleExtractResources(ProjectTests.class, "/projects/server");
+    File testDir = loadProject("/projects/server");
 
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoals(
@@ -51,11 +69,22 @@ public class ProjectTests {
 
   @Test
   public void testClientGeneratedSourceCreation() throws IOException, VerificationException {
-    File testDir = ResourceExtractor.simpleExtractResources(ProjectTests.class, "/projects/client");
+    File testDir = loadProject("/projects/client");
 
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
-    verifier.executeGoals(Arrays.asList("compile"));
+    verifier.executeGoals(Collections.singletonList("compile"));
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent("target/generated-sources/endpoints/com/example/testApi/TestApi.java");
+  }
+
+  private File loadProject(String path) throws IOException {
+    File dir = ResourceExtractor.extractResourcePath(ProjectTests.class, path, testRoot.getRoot());
+
+    File pom = new File(dir, "pom.xml");
+    String pomContents = FileUtils.fileRead(pom);
+    pomContents = pomContents.replaceAll("@@PluginVersion@@", pluginVersion);
+    FileUtils.fileWrite(pom, pomContents);
+
+    return dir;
   }
 }

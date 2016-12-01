@@ -15,7 +15,7 @@
  *
  */
 
-package com.google.cloud.tools.endpoints.framework;
+package com.google.cloud.tools.maven.endpoints.framework;
 
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GenClientLibAction;
@@ -50,7 +50,7 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
   private MavenProject project;
 
   /**
-   * Output directory for client libraries
+   * Output directory for generated sources
    */
   @Parameter(defaultValue = "${project.build.directory}/generated-sources/endpoints",
       property = "endpoints.generatedSrcDir", required = true)
