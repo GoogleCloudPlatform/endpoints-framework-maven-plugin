@@ -15,8 +15,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <appengine-maven-plugin.version>1.0.0</appengine-maven-plugin.version>
     <appengine-dependencies.version>1.9.46</appengine-dependencies.version>
-    <!-- TODO: make this automatic somehow -->
-    <endpoints-framework-maven-plugin.version>0.1.0-SNAPSHOT</endpoints-framework-maven-plugin.version>
+    <endpoints-framework-maven-plugin.version>@@PluginVersion@@</endpoints-framework-maven-plugin.version>
   </properties>
 
   <dependencies>

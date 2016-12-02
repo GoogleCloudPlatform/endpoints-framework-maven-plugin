@@ -30,8 +30,7 @@
     <java.target.version>1.7</java.target.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- TODO: make this automatic somehow -->
-    <endpoints-framework-maven-plugin.version>0.1.0-SNAPSHOT</endpoints-framework-maven-plugin.version>
+    <endpoints-framework-maven-plugin.version>@@PluginVersion@@</endpoints-framework-maven-plugin.version>
   </properties>
 
   <dependencies>

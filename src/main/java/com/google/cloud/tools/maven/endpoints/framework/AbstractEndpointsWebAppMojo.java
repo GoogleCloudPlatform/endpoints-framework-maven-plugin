@@ -15,7 +15,7 @@
  *
  */
 
-package com.google.cloud.tools.endpoints.framework;
+package com.google.cloud.tools.maven.endpoints.framework;
 
 import java.io.File;
 import java.util.List;
