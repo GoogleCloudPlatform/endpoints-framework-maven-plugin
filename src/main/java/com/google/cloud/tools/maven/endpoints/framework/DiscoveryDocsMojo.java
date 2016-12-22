@@ -49,12 +49,6 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
              property = "endpoints.discoveryDocDir", required = true)
   private File discoveryDocDir;
 
-  /**
-   * Output format for discovery docs (rest or rpc)
-   */
-  @Parameter(defaultValue = "rest", property = "endpoints.format", required = true)
-  private String format;
-
   public void execute() throws MojoExecutionException {
     try {
       if (!discoveryDocDir.exists()) {
@@ -69,7 +63,6 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
       List<String> params = new ArrayList<>(Arrays.asList(
           GetDiscoveryDocAction.NAME,
           "-o", discoveryDocDir.getPath(),
-          "-f", format,
           "-cp", classpath,
           "-w", webappDir.getPath()));
       if (serviceClasses != null) {

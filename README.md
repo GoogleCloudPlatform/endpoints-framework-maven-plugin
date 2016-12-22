@@ -30,7 +30,6 @@ The plugin exposes the following server side goals
 
 The plugin exposes the following parameters for configuring server side goals
 * `discoveryDocDir` - The output directory of discovery documents
-* `format` - The output format of discovery documents [rest or rpc]
 * `clientLibDir` - The output directory of client libraries
 * `serviceClasses` - List of service classes (optional), this can be inferred from web.xml
 * `webappDir` - Location of webapp directory

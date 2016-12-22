@@ -30,13 +30,12 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class ProjectTests {
+public class ProjectTest {
 
   public static String pluginVersion = null;
 
@@ -46,6 +45,8 @@ public class ProjectTests {
   @BeforeClass
   public static void setUp() throws VerificationException, IOException, XmlPullParserException {
     Verifier verifier = new Verifier(".", true);
+    // clean is causing some issues with appveyor builds
+    verifier.setAutoclean(false);
     verifier.addCliOption("-DskipTests");
     verifier.executeGoal("install");
 
@@ -78,7 +79,7 @@ public class ProjectTests {
   }
 
   private File loadProject(String path) throws IOException {
-    File dir = ResourceExtractor.extractResourcePath(ProjectTests.class, path, testRoot.getRoot());
+    File dir = ResourceExtractor.extractResourcePath(ProjectTest.class, path, testRoot.getRoot());
 
     File pom = new File(dir, "pom.xml");
     String pomContents = FileUtils.fileRead(pom);
