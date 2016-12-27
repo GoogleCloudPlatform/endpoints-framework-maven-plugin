@@ -11,6 +11,29 @@
   <description>This Maven plugin provides goals to generate Google Cloud Endpoints Framework client code and discovery docs</description>
   <url>https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin</url>
 
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>loosebazooka</id>
+      <name>Appu Goundan</name>
+      <email>appu@google.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin.git
+    </connection>
+    <developerConnection>scm:git:https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin.git
+    </developerConnection>
+    <url>https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin</url>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
