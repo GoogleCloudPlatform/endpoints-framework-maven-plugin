@@ -37,7 +37,7 @@ The plugin exposes the following parameters for configuring server side goals
 #### Usage
 Make sure your web.xml is [configured to expose your endpoints](https://cloud.google.com/endpoints/docs/frameworks/java/required_files) correctly.
 
-No configuration paramters are required to run with default values
+No configuration parameters are required to run with default values
 ```
 $> mvn endpoints-framework:clientLibs
 $> mvn endpoints-framework:discoveryDocs
@@ -48,7 +48,7 @@ $> mvn endpoints-framework:discoveryDocs
 The plugin exposes the following client side goals
 * `generateSrc`
 
-The plugin exposes the following paramters for client side goals
+The plugin exposes the following parameters for client side goals
 * `generatedSrcDir` - The output directory of generated endpoints source
 * `discoveryDocs` - List of discovery docs to generate source from
 
