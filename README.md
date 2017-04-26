@@ -33,6 +33,7 @@ The plugin exposes the following parameters for configuring server side goals
 * `clientLibDir` - The output directory of client libraries
 * `serviceClasses` - List of service classes (optional), this can be inferred from web.xml
 * `webappDir` - Location of webapp directory
+* `hostname` - To set the root url for discovery docs and client libs (ex: `hostname = myapp.appspot.com` will result in a default root url of `https://myapp.appspot.com/_ah/api`)
 
 #### Usage
 Make sure your web.xml is [configured to expose your endpoints](https://cloud.google.com/endpoints/docs/frameworks/java/required_files) correctly.
