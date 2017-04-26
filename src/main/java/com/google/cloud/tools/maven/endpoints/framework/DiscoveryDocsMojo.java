@@ -20,6 +20,7 @@ package com.google.cloud.tools.maven.endpoints.framework;
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GetDiscoveryDocAction;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +50,12 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
              property = "endpoints.discoveryDocDir", required = true)
   private File discoveryDocDir;
 
+  /**
+   * Default hostname of the Endpoint Host.
+   */
+  @Parameter(property = "endpoints.hostname", required = false)
+  private String hostname;
+
   public void execute() throws MojoExecutionException {
     try {
       if (!discoveryDocDir.exists()) {
@@ -65,11 +72,17 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
           "-o", discoveryDocDir.getPath(),
           "-cp", classpath,
           "-w", webappDir.getPath()));
+      if (!Strings.isNullOrEmpty(hostname)) {
+        params.add("-h");
+        params.add(hostname);
+      }
       if (serviceClasses != null) {
         params.addAll(serviceClasses);
       }
 
+      System.out.print(params);
       new EndpointsTool().execute(params.toArray(new String[params.size()]));
+
 
     } catch (Exception e) {
       throw new MojoExecutionException("Endpoints Tool Error", e);
