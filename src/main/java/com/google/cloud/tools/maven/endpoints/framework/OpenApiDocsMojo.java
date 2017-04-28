@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc. All Right Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.google.cloud.tools.maven.endpoints.framework;
 
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GetDiscoveryDocAction;
+import com.google.api.server.spi.tools.GetOpenApiDocAction;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import java.io.File;
@@ -34,40 +35,40 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Goal which generates discovery docs
+ * Goal which generates openapi docs
  */
-@Mojo(name = "discoveryDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "openApiDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
 @Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
-public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
+public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
   /**
-   * Output directory for discovery docs
+   * Output directory for openapi docs
    */
-  @Parameter(defaultValue = "${project.build.directory}/discovery-docs",
-             property = "endpoints.discoveryDocDir", required = true)
-  private File discoveryDocDir;
+  @Parameter(defaultValue = "${project.build.directory}/openapi-docs",
+             property = "endpoints.openApiDocDir", required = true)
+  private File openApiDocDir;
 
   /**
-   * Default hostname of the Endpoint Host.
+   * Default hostname of the endpoint host.
    */
   @Parameter(property = "endpoints.hostname", required = false)
   private String hostname;
 
   public void execute() throws MojoExecutionException {
     try {
-      if (!discoveryDocDir.exists() && !discoveryDocDir.mkdirs()) {
+      if (!openApiDocDir.exists() && !openApiDocDir.mkdirs()) {
         throw new MojoExecutionException(
-            "Failed to create output directory: " + discoveryDocDir.getAbsolutePath());
+            "Failed to create output directory: " + openApiDocDir.getAbsolutePath());
       }
       String classpath = Joiner.on(File.pathSeparator)
           .join(project.getCompileClasspathElements(), classesDir);
 
       List<String> params = new ArrayList<>(Arrays.asList(
-          GetDiscoveryDocAction.NAME,
-          "-o", discoveryDocDir.getAbsolutePath(),
+          GetOpenApiDocAction.NAME,
+          "-o", computeOpenApiDocPath(),
           "-cp", classpath,
           "-w", webappDir.getAbsolutePath()));
       if (!Strings.isNullOrEmpty(hostname)) {
@@ -85,5 +86,9 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
     } catch (Exception e) {
       throw new MojoExecutionException("Endpoints Tool Error", e);
     }
+  }
+
+  private String computeOpenApiDocPath() {
+    return new File(openApiDocDir, "openapi.json").getAbsolutePath();
   }
 }
