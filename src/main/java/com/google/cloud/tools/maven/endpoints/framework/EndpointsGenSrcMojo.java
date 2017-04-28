@@ -111,6 +111,7 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
         "-o", outputDir.getAbsolutePath()));
 
     params.add(discoveryDoc.getAbsolutePath());
+    getLog().info("Endpoints Tool params : " + params.toString());
     new EndpointsTool().execute(params.toArray(new String[params.size()]));
   }
 

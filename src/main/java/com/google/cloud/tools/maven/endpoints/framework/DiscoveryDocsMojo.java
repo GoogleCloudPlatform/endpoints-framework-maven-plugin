@@ -80,7 +80,7 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
         params.addAll(serviceClasses);
       }
 
-      System.out.print(params);
+      getLog().info("Endpoints Tool params : " + params.toString());
       new EndpointsTool().execute(params.toArray(new String[params.size()]));
 
 
