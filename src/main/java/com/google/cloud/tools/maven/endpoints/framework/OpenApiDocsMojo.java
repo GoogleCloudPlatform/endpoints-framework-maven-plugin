@@ -59,11 +59,9 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
 
   public void execute() throws MojoExecutionException {
     try {
-      if (!openApiDocDir.exists()) {
-        if (!openApiDocDir.mkdirs()) {
-          throw new MojoExecutionException(
-              "Failed to create output directory: " + openApiDocDir.getAbsolutePath());
-        }
+      if (!openApiDocDir.exists() && !openApiDocDir.mkdirs()) {
+        throw new MojoExecutionException(
+            "Failed to create output directory: " + openApiDocDir.getAbsolutePath());
       }
       String classpath = Joiner.on(File.pathSeparator)
           .join(project.getCompileClasspathElements(), classesDir);

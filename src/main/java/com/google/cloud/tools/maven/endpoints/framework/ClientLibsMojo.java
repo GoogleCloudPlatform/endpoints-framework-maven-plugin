@@ -58,11 +58,9 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
   private String hostname;
 
   public void execute() throws MojoExecutionException, MojoFailureException {
-    if (!clientLibDir.exists()) {
-      if (!clientLibDir.mkdirs()) {
-        throw new MojoExecutionException(
-            "Failed to create output directory: " + clientLibDir.getPath());
-      }
+    if (!clientLibDir.exists() && !clientLibDir.mkdirs()) {
+      throw new MojoExecutionException(
+          "Failed to create output directory: " + clientLibDir.getAbsolutePath());
     }
     try {
       String classpath = Joiner.on(File.pathSeparator)
@@ -70,11 +68,11 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
 
       List<String> params = new ArrayList<>(Arrays.asList(
           GetClientLibAction.NAME,
-          "-o", clientLibDir.getPath(),
+          "-o", clientLibDir.getAbsolutePath(),
           "-cp", classpath,
           "-l", "java",
           "-bs", "maven",
-          "-w", webappDir.getPath()));
+          "-w", webappDir.getAbsolutePath()));
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);
@@ -83,7 +81,7 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
         params.addAll(serviceClasses);
       }
 
-      System.out.print(params);
+      getLog().info("Endpoints Tool params : " + params.toString());
       new EndpointsTool().execute(params.toArray(new String[params.size()]));
 
     } catch (Exception e) {

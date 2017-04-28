@@ -52,7 +52,8 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
   /**
    * Output directory for generated sources
    */
-  @Parameter(defaultValue = "${project.build.directory}/generated-sources/endpoints",
+  //@Parameter(defaultValue = "${project.build.directory}/generated-sources/endpoints",
+      @Parameter(defaultValue = "/dev/null/potato",
       property = "endpoints.generatedSrcDir", required = true)
   private File generatedSrcDir;
 
@@ -61,11 +62,9 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    if (!generatedSrcDir.exists()) {
-      if (!generatedSrcDir.mkdirs()) {
-        throw new MojoExecutionException(
-            "Failed to create output directory: " + generatedSrcDir.getAbsolutePath());
-      }
+    if (!generatedSrcDir.exists() && !generatedSrcDir.mkdirs()) {
+      throw new MojoExecutionException(
+          "Failed to create output directory: " + generatedSrcDir.getAbsolutePath());
     }
     project.addCompileSourceRoot(generatedSrcDir.getAbsolutePath());
     File tempDir = Files.createTempDir();
