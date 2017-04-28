@@ -52,8 +52,7 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
   /**
    * Output directory for generated sources
    */
-  //@Parameter(defaultValue = "${project.build.directory}/generated-sources/endpoints",
-      @Parameter(defaultValue = "/dev/null/potato",
+  @Parameter(defaultValue = "${project.build.directory}/generated-sources/endpoints",
       property = "endpoints.generatedSrcDir", required = true)
   private File generatedSrcDir;
 
