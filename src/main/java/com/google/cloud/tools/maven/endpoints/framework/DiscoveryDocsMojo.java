@@ -61,7 +61,7 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
       if (!discoveryDocDir.exists()) {
         if (!discoveryDocDir.mkdirs()) {
           throw new MojoExecutionException(
-              "Failed to create output directory: " + discoveryDocDir.getPath());
+              "Failed to create output directory: " + discoveryDocDir.getAbsolutePath());
         }
       }
       String classpath = Joiner.on(File.pathSeparator)
@@ -69,9 +69,9 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
 
       List<String> params = new ArrayList<>(Arrays.asList(
           GetDiscoveryDocAction.NAME,
-          "-o", discoveryDocDir.getPath(),
+          "-o", discoveryDocDir.getAbsolutePath(),
           "-cp", classpath,
-          "-w", webappDir.getPath()));
+          "-w", webappDir.getAbsolutePath()));
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);

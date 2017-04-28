@@ -64,7 +64,7 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
     if (!generatedSrcDir.exists()) {
       if (!generatedSrcDir.mkdirs()) {
         throw new MojoExecutionException(
-            "Failed to create output directory: " + generatedSrcDir.getPath());
+            "Failed to create output directory: " + generatedSrcDir.getAbsolutePath());
       }
     }
     project.addCompileSourceRoot(generatedSrcDir.getAbsolutePath());
@@ -96,7 +96,7 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
       try {
         unzipSrcDirs(zip, generatedSrcDir);
       } catch (IOException e) {
-        throw new MojoExecutionException("Exception when unzipping : " + zip.getPath(), e);
+        throw new MojoExecutionException("Exception when unzipping : " + zip.getAbsolutePath(), e);
       }
     }
 
@@ -108,7 +108,7 @@ public class EndpointsGenSrcMojo extends AbstractMojo {
         GenClientLibAction.NAME,
         "-l", "java",
         "-bs", "maven",
-        "-o", outputDir.getPath()));
+        "-o", outputDir.getAbsolutePath()));
 
     params.add(discoveryDoc.getAbsolutePath());
     new EndpointsTool().execute(params.toArray(new String[params.size()]));

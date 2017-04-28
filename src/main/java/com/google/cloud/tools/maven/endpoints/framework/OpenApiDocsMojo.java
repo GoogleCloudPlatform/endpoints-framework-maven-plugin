@@ -35,7 +35,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Goal which generates discovery docs
+ * Goal which generates openapi docs
  */
 @Mojo(name = "openApiDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
 @Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
@@ -45,14 +45,14 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
   private MavenProject project;
 
   /**
-   * Output directory for discovery docs
+   * Output directory for openapi docs
    */
   @Parameter(defaultValue = "${project.build.directory}/openapi-docs",
              property = "endpoints.openApiDocDir", required = true)
   private File openApiDocDir;
 
   /**
-   * Default hostname of the Endpoint Host.
+   * Default hostname of the endpoint host.
    */
   @Parameter(property = "endpoints.hostname", required = false)
   private String hostname;
@@ -62,7 +62,7 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
       if (!openApiDocDir.exists()) {
         if (!openApiDocDir.mkdirs()) {
           throw new MojoExecutionException(
-              "Failed to create output directory: " + openApiDocDir.getPath());
+              "Failed to create output directory: " + openApiDocDir.getAbsolutePath());
         }
       }
       String classpath = Joiner.on(File.pathSeparator)
@@ -72,7 +72,7 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
           GetOpenApiDocAction.NAME,
           "-o", computeOpenApiDocPath(),
           "-cp", classpath,
-          "-w", webappDir.getPath()));
+          "-w", webappDir.getAbsolutePath()));
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);
@@ -91,6 +91,6 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
   }
 
   private String computeOpenApiDocPath() {
-    return new File(openApiDocDir, "openapi.json").getPath();
+    return new File(openApiDocDir, "openapi.json").getAbsolutePath();
   }
 }
