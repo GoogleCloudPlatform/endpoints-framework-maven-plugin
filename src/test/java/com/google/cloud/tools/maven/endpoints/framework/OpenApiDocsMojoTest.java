@@ -39,14 +39,17 @@ public class OpenApiDocsMojoTest {
   @Rule
   public TemporaryFolder tmpDir = new TemporaryFolder();
 
-  @Test
-  public void testDefault() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").build();
-
-    Verifier verifier = new Verifier(testDir.getAbsolutePath());
+  private void buildAndVerify(File projectDir) throws VerificationException {
+    Verifier verifier = new Verifier(projectDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:openApiDocs");
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent(OPEN_API_DOC_PATH);
+  }
+
+  @Test
+  public void testDefault() throws IOException, VerificationException, XmlPullParserException {
+    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").build();
+    buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(openapi, JUnitMatchers.containsString(DEFAULT_HOSTNAME));
@@ -55,11 +58,7 @@ public class OpenApiDocsMojoTest {
   @Test
   public void testApplicationId() throws IOException, VerificationException, XmlPullParserException {
     File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
-
-    Verifier verifier = new Verifier(testDir.getAbsolutePath());
-    verifier.executeGoal("endpoints-framework:openApiDocs");
-    verifier.verifyErrorFreeLog();
-    verifier.assertFilePresent(OPEN_API_DOC_PATH);
+    buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_HOSTNAME)));
@@ -72,11 +71,7 @@ public class OpenApiDocsMojoTest {
     File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
         .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
         .build();
-
-    Verifier verifier = new Verifier(testDir.getAbsolutePath());
-    verifier.executeGoal("endpoints-framework:openApiDocs");
-    verifier.verifyErrorFreeLog();
-    verifier.assertFilePresent(OPEN_API_DOC_PATH);
+    buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_HOSTNAME)));

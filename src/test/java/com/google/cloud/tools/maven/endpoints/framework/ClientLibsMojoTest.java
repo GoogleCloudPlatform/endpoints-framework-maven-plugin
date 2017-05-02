@@ -28,13 +28,13 @@ import java.util.zip.ZipFile;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 import org.junit.rules.TemporaryFolder;
 
-/** Test for ClientLibsMojo. */
 public class ClientLibsMojoTest {
 
   private static final String DEFAULT_HOSTNAME = "myapi.appspot.com";
@@ -47,14 +47,17 @@ public class ClientLibsMojoTest {
   @Rule
   public TemporaryFolder tmpDir = new TemporaryFolder();
 
-  @Test
-  public void testDefault() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").build();
-
-    Verifier verifier = new Verifier(testDir.getAbsolutePath());
+  private void buildAndVerify(File projectDir) throws VerificationException {
+    Verifier verifier = new Verifier(projectDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:clientLibs");
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent(CLIENT_LIB_PATH);
+  }
+
+  @Test
+  public void testDefault() throws IOException, VerificationException, XmlPullParserException {
+    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").build();
+    buildAndVerify(testDir);
 
     String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
     Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_VARIABLE));
@@ -63,15 +66,11 @@ public class ClientLibsMojoTest {
   @Test
   public void testApplicationId() throws IOException, VerificationException, XmlPullParserException {
     File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
-
-    Verifier verifier = new Verifier(testDir.getAbsolutePath());
-    verifier.executeGoal("endpoints-framework:clientLibs");
-    verifier.verifyErrorFreeLog();
-    verifier.assertFilePresent(CLIENT_LIB_PATH);
+    buildAndVerify(testDir);
 
     String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    Assert.assertThat(apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
     Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://maven-test.appspot.com/_ah/api/\";"));
-
   }
 
   @Test
@@ -79,15 +78,11 @@ public class ClientLibsMojoTest {
     File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
         .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
         .build();
-
-    Verifier verifier = new Verifier(testDir.getAbsolutePath());
-    verifier.executeGoal("endpoints-framework:clientLibs");
-    verifier.verifyErrorFreeLog();
-    verifier.assertFilePresent(CLIENT_LIB_PATH);
+    buildAndVerify(testDir);
 
     String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    Assert.assertThat(apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
     Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com/_ah/api/\";"));
-
   }
 
   private String getFileContentsInZip(File zipFile, String path) throws IOException {

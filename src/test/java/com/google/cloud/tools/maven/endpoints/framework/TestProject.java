@@ -34,7 +34,7 @@ public class TestProject {
   private static String pluginVersion = null;
 
   // this only needs to be done once, maven doesn't play well with junit suites, so just do it
-  // here in the Fixture.
+  // here in the fixture.
   private static void prepareEnvironment()
       throws VerificationException, IOException, XmlPullParserException {
     if (!environmentPrepared) {
