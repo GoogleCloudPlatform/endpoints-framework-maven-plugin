@@ -59,6 +59,7 @@ public class OpenApiDocsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:openApiDocs");
     verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent(OPEN_API_DOC_PATH);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_HOSTNAME)));
@@ -75,6 +76,7 @@ public class OpenApiDocsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:openApiDocs");
     verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent(OPEN_API_DOC_PATH);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_HOSTNAME)));

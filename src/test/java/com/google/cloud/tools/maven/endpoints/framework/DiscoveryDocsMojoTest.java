@@ -36,7 +36,7 @@ public class DiscoveryDocsMojoTest {
 
   private static final String DEFAULT_HOSTNAME = "myapi.appspot.com";
   private static final String DEFAULT_URL = "https://" + DEFAULT_HOSTNAME + "/_ah/api/";
-  private static final String DISC_DOC_PATH = "target/discovery-docs/testApi-v1-rest.discovery";
+  private static final String DISCOVERY_DOC_PATH = "target/discovery-docs/testApi-v1-rest.discovery";
 
   @Rule
   public TemporaryFolder tmpDir = new TemporaryFolder();
@@ -48,14 +48,15 @@ public class DiscoveryDocsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:discoveryDocs");
     verifier.verifyErrorFreeLog();
-    verifier.assertFilePresent(DISC_DOC_PATH);
+    verifier.assertFilePresent(DISCOVERY_DOC_PATH);
 
-    String discovery = Files.toString(new File(testDir, DISC_DOC_PATH), Charsets.UTF_8);
+    String discovery = Files.toString(new File(testDir, DISCOVERY_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(discovery, JUnitMatchers.containsString(DEFAULT_URL));
   }
 
   @Test
-  public void testApplicationId() throws IOException, VerificationException, XmlPullParserException {
+  public void testApplicationId()
+      throws IOException, VerificationException, XmlPullParserException {
     File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
         .applicationId("maven-test")
         .build();
@@ -63,10 +64,12 @@ public class DiscoveryDocsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:discoveryDocs");
     verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent(DISCOVERY_DOC_PATH);
 
-    String discovery = Files.toString(new File(testDir, DISC_DOC_PATH), Charsets.UTF_8);
+    String discovery = Files.toString(new File(testDir, DISCOVERY_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(discovery, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL)));
-    Assert.assertThat(discovery, JUnitMatchers.containsString("https://maven-test.appspot.com/_ah/api"));
+    Assert.assertThat(discovery,
+        JUnitMatchers.containsString("https://maven-test.appspot.com/_ah/api"));
 
   }
 
@@ -79,8 +82,9 @@ public class DiscoveryDocsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:discoveryDocs");
     verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent(DISCOVERY_DOC_PATH);
 
-    String discovery = Files.toString(new File(testDir, DISC_DOC_PATH), Charsets.UTF_8);
+    String discovery = Files.toString(new File(testDir, DISCOVERY_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(discovery, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL)));
     Assert.assertThat(discovery, JUnitMatchers.containsString("https://my.hostname.com/_ah/api"));
   }

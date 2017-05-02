@@ -67,6 +67,7 @@ public class ClientLibsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:clientLibs");
     verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent(CLIENT_LIB_PATH);
 
     String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
     Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://maven-test.appspot.com/_ah/api/\";"));
@@ -82,6 +83,7 @@ public class ClientLibsMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoal("endpoints-framework:clientLibs");
     verifier.verifyErrorFreeLog();
+    verifier.assertFilePresent(CLIENT_LIB_PATH);
 
     String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
     Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com/_ah/api/\";"));

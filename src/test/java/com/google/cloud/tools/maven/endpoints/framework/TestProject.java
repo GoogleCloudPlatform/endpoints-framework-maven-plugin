@@ -97,7 +97,7 @@ public class TestProject {
     return dir;
   }
 
-  // inject a endpoints plugin configuration into the pom.xml
+  // inject an endpoints plugin configuration into the pom.xml
   private void injectConfiguration(File root, String configuration) throws IOException {
     File pom = new File(root, "pom.xml");
     String pomContents = FileUtils.fileRead(pom);
