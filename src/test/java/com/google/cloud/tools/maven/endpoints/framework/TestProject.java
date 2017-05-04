@@ -53,14 +53,14 @@ public class TestProject {
   }
 
   private final File testDir;
-  private final String projectPath;
+  private final String projectPathInResources;
 
   private String configuration;
   private String application;
 
-  public TestProject(File testDir, String projectPath) {
+  public TestProject(File testDir, String projectPathInResources) {
     this.testDir = testDir;
-    this.projectPath = projectPath;
+    this.projectPathInResources = projectPathInResources;
   }
 
   public TestProject configuration(String configuration) {
@@ -75,7 +75,7 @@ public class TestProject {
 
   public File build() throws IOException, VerificationException, XmlPullParserException {
     prepareEnvironment();
-    File root = build(projectPath);
+    File root = copyProject();
     if (application != null) {
       injectApplicationId(root, application);
     }
@@ -85,29 +85,29 @@ public class TestProject {
     return root;
   }
 
-  private File build(String path) throws IOException {
-    File dir = ResourceExtractor
-        .extractResourcePath(TestProject.class, path, testDir, true);
+  private File copyProject() throws IOException {
+    File projectRoot = ResourceExtractor
+        .extractResourcePath(TestProject.class, projectPathInResources, testDir, true);
 
-    File pom = new File(dir, "pom.xml");
+    File pom = new File(projectRoot, "pom.xml");
     String pomContents = FileUtils.fileRead(pom);
     pomContents = pomContents.replaceAll("@@PluginVersion@@", pluginVersion);
     FileUtils.fileWrite(pom, pomContents);
 
-    return dir;
+    return projectRoot;
   }
 
   // inject an endpoints plugin configuration into the pom.xml
-  private void injectConfiguration(File root, String configuration) throws IOException {
-    File pom = new File(root, "pom.xml");
+  private void injectConfiguration(File projectRoot, String configuration) throws IOException {
+    File pom = new File(projectRoot, "pom.xml");
     String pomContents = FileUtils.fileRead(pom);
     pomContents = pomContents.replaceAll("<!--endpoints-plugin-configuration-->", configuration);
     FileUtils.fileWrite(pom, pomContents);
   }
 
   // inject an application tag into the appengine-web.xml
-  private void injectApplicationId(File root, String application) throws IOException {
-    File app = new File(root, "src/main/webapp/WEB-INF/appengine-web.xml");
+  private void injectApplicationId(File projectRoot, String application) throws IOException {
+    File app = new File(projectRoot, "src/main/webapp/WEB-INF/appengine-web.xml");
     String appContents = FileUtils.fileRead(app);
     appContents = appContents.replaceAll("<!--application-->", "<application>" + application + "</application>");
     FileUtils.fileWrite(app, appContents);
