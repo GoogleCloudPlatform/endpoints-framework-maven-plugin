@@ -20,6 +20,7 @@ package com.google.cloud.tools.maven.endpoints.framework;
 import com.google.api.server.spi.tools.EndpointsTool;
 import com.google.api.server.spi.tools.GetClientLibAction;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,12 +51,16 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
              property = "endpoints.clientLibDir", required = true)
   private File clientLibDir;
 
+  /**
+   * Default hostname of the Endpoint Host.
+   */
+  @Parameter(property = "endpoints.hostname")
+  private String hostname;
+
   public void execute() throws MojoExecutionException, MojoFailureException {
-    if (!clientLibDir.exists()) {
-      if (!clientLibDir.mkdirs()) {
-        throw new MojoExecutionException(
-            "Failed to create output directory: " + clientLibDir.getPath());
-      }
+    if (!clientLibDir.exists() && !clientLibDir.mkdirs()) {
+      throw new MojoExecutionException(
+          "Failed to create output directory: " + clientLibDir.getAbsolutePath());
     }
     try {
       String classpath = Joiner.on(File.pathSeparator)
@@ -63,15 +68,20 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
 
       List<String> params = new ArrayList<>(Arrays.asList(
           GetClientLibAction.NAME,
-          "-o", clientLibDir.getPath(),
+          "-o", clientLibDir.getAbsolutePath(),
           "-cp", classpath,
           "-l", "java",
           "-bs", "maven",
-          "-w", webappDir.getPath()));
+          "-w", webappDir.getAbsolutePath()));
+      if (!Strings.isNullOrEmpty(hostname)) {
+        params.add("-h");
+        params.add(hostname);
+      }
       if (serviceClasses != null) {
         params.addAll(serviceClasses);
       }
 
+      getLog().info("Endpoints Tool params : " + params.toString());
       new EndpointsTool().execute(params.toArray(new String[params.size()]));
 
     } catch (Exception e) {

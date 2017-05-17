@@ -17,7 +17,7 @@ In your Maven App Engine Java app, add the following plugin to your pom.xml:
 <plugin>
   <groupId>com.google.cloud.tools</groupId>
   <artifactId>endpoints-framework-maven-plugin</artifactId>
-  <version>1.0.0-beta3</version>
+  <version>1.0.0</version>
 </plugin>
 ```
 All goals are prefixed with `endpoints-framework`
@@ -27,12 +27,15 @@ All goals are prefixed with `endpoints-framework`
 The plugin exposes the following server side goals
 * `clientLibs` - generate client libraries
 * `discoveryDocs` - generate discovery docs
+* `openApiDocs` - generate Open API docs
 
 The plugin exposes the following parameters for configuring server side goals
 * `discoveryDocDir` - The output directory of discovery documents
 * `clientLibDir` - The output directory of client libraries
+* `openApiDocDir` - The output directory of Open API documents
 * `serviceClasses` - List of service classes (optional), this can be inferred from web.xml
 * `webappDir` - Location of webapp directory
+* `hostname` - To set the root url for discovery docs and client libs (ex: `hostname = myapp.appspot.com` will result in a default root url of `https://myapp.appspot.com/_ah/api`)
 
 #### Usage
 Make sure your web.xml is [configured to expose your endpoints](https://cloud.google.com/endpoints/docs/frameworks/java/required_files) correctly.
