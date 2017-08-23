@@ -63,8 +63,8 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
         throw new MojoExecutionException(
             "Failed to create output directory: " + openApiDocDir.getAbsolutePath());
       }
-      String classpath = Joiner.on(File.pathSeparator)
-          .join(project.getCompileClasspathElements(), classesDir);
+      String classpath = Joiner.on(File.pathSeparator).join(project.getRuntimeClasspathElements());
+      classpath += File.pathSeparator + classesDir;
 
       List<String> params = new ArrayList<>(Arrays.asList(
           GetOpenApiDocAction.NAME,
