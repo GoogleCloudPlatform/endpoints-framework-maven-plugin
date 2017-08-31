@@ -63,8 +63,8 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
           "Failed to create output directory: " + clientLibDir.getAbsolutePath());
     }
     try {
-      String classpath = Joiner.on(File.pathSeparator)
-          .join(project.getCompileClasspathElements(), classesDir);
+      String classpath = Joiner.on(File.pathSeparator).join(project.getRuntimeClasspathElements());
+      classpath += File.pathSeparator + classesDir;
 
       List<String> params = new ArrayList<>(Arrays.asList(
           GetClientLibAction.NAME,

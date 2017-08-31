@@ -62,8 +62,8 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
         throw new MojoExecutionException(
             "Failed to create output directory: " + discoveryDocDir.getAbsolutePath());
       }
-      String classpath = Joiner.on(File.pathSeparator)
-          .join(project.getCompileClasspathElements(), classesDir);
+      String classpath = Joiner.on(File.pathSeparator).join(project.getRuntimeClasspathElements());
+      classpath += File.pathSeparator + classesDir;
 
       List<String> params = new ArrayList<>(Arrays.asList(
           GetDiscoveryDocAction.NAME,
