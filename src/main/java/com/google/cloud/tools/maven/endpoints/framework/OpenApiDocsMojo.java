@@ -18,21 +18,17 @@
 package com.google.cloud.tools.maven.endpoints.framework;
 
 import com.google.api.server.spi.tools.EndpointsTool;
-import com.google.api.server.spi.tools.GetDiscoveryDocAction;
 import com.google.api.server.spi.tools.GetOpenApiDocAction;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.project.MavenProject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
 
 /**
  * Goal which generates openapi docs
@@ -57,6 +53,12 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.hostname", required = false)
   private String hostname;
 
+  /**
+   * Default basePath of the endpoint host.
+   */
+  @Parameter(property = "endpoints.basePath", required = false)
+  private String basePath;
+
   public void execute() throws MojoExecutionException {
     try {
       if (!openApiDocDir.exists() && !openApiDocDir.mkdirs()) {
@@ -74,6 +76,10 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);
+      }
+      if (!Strings.isNullOrEmpty(basePath)) {
+        params.add("-p");
+        params.add(basePath);
       }
       if (serviceClasses != null) {
         params.addAll(serviceClasses);
