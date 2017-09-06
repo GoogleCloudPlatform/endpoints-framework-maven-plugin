@@ -19,6 +19,8 @@ package com.google.cloud.tools.maven.endpoints.framework;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -29,17 +31,13 @@ import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
-
 public class OpenApiDocsMojoTest {
 
   private static final String DEFAULT_HOSTNAME = "myapi.appspot.com";
   private static final String DEFAULT_BASE_PATH = "/_ah/api";
   private static final String OPEN_API_DOC_PATH = "target/openapi-docs/openapi.json";
 
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
+  @Rule public TemporaryFolder tmpDir = new TemporaryFolder();
 
   private void buildAndVerify(File projectDir) throws VerificationException {
     Verifier verifier = new Verifier(projectDir.getAbsolutePath());
@@ -58,8 +56,10 @@ public class OpenApiDocsMojoTest {
   }
 
   @Test
-  public void testApplicationId() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
+  public void testApplicationId()
+      throws IOException, VerificationException, XmlPullParserException {
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
     buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
@@ -69,9 +69,10 @@ public class OpenApiDocsMojoTest {
 
   @Test
   public void testHostname() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
-        .build();
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
+            .build();
     buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
@@ -81,7 +82,8 @@ public class OpenApiDocsMojoTest {
 
   @Test
   public void testBasePath() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
             .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
             .build();
     buildAndVerify(testDir);
@@ -90,5 +92,4 @@ public class OpenApiDocsMojoTest {
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_BASE_PATH)));
     Assert.assertThat(openapi, JUnitMatchers.containsString("\"basePath\": \"/a/different/path\""));
   }
-
 }
