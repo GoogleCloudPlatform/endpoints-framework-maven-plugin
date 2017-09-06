@@ -32,7 +32,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProject;
 
 /** Goal which generates openapi docs */
 @Mojo(name = "openApiDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
