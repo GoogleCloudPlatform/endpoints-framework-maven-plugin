@@ -130,6 +130,71 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Checkstyle -->
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.17</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>7.6.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <consoleOutput>false</consoleOutput>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>warning</violationSeverity>
+          <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <configLocation>google_checks.xml</configLocation>
+            </configuration>
+          </execution>
+          <execution>
+            <id>header-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <configLocation>config/checkstyle-header.xml</configLocation>
+              <headerLocation>config/header-java.txt</headerLocation>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Google Java Format -->
+      <plugin>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>googleformatter-maven-plugin</artifactId>
+        <version>1.0.6</version>
+        <executions>
+          <execution>
+            <id>reformat-sources</id>
+            <configuration>
+              <includeStale>false</includeStale>
+              <maxWidth>160</maxWidth>
+              <sortImports>NO</sortImports>
+              <javadocFormatter>NONE</javadocFormatter>
+              <style>GOOGLE</style>
+              <filterModified>true</filterModified>
+              <skip>false</skip>
+            </configuration>
+            <goals>
+              <goal>format</goal>
+            </goals>
+            <phase>process-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
