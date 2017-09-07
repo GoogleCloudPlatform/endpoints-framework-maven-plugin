@@ -57,6 +57,12 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.hostname")
   private String hostname;
 
+  /**
+   * Default basePath of the Endpoint Host.
+   */
+  @Parameter(property = "endpoints.basePath")
+  private String basePath;
+
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (!clientLibDir.exists() && !clientLibDir.mkdirs()) {
       throw new MojoExecutionException(
@@ -76,6 +82,10 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);
+      }
+      if (!Strings.isNullOrEmpty(basePath)) {
+        params.add("-p");
+        params.add(basePath);
       }
       if (serviceClasses != null) {
         params.addAll(serviceClasses);
