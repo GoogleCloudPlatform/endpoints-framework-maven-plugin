@@ -4,8 +4,7 @@
   "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 <module name="Checker">
   <module name="RegexpHeader">
-    <property name="headerFile" value="${checkstyle.header.file}"/>
+    <property name="headerFile" value="config/copyright.header"/>
     <property name="fileExtensions" value="java"/>
-    <property name="id" value="header"/>
   </module>
 </module>

@@ -139,7 +139,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>7.6.1</version>
+            <version>8.2</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -150,16 +150,18 @@
         </configuration>
         <executions>
           <execution>
-            <id>default-cli</id>
+            <id>google-checks</id>
+            <phase>validate</phase>
             <goals>
               <goal>check</goal>
             </goals>
             <configuration>
-              <configLocation>google_checks.xml</configLocation>
+              <configLocation>config/google-checks-no-indent.xml</configLocation>
             </configuration>
           </execution>
           <execution>
             <id>header-check</id>
+            <phase>validate</phase>
             <goals>
               <goal>check</goal>
             </goals>
@@ -172,26 +174,25 @@
       </plugin>
 
       <!-- Google Java Format -->
+
       <plugin>
-        <groupId>com.theoryinpractise</groupId>
-        <artifactId>googleformatter-maven-plugin</artifactId>
-        <version>1.0.6</version>
+        <groupId>com.coveo</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <version>1.8.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.google.googlejavaformat</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>1.4</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
-            <id>reformat-sources</id>
-            <configuration>
-              <includeStale>false</includeStale>
-              <maxWidth>160</maxWidth>
-              <sortImports>NO</sortImports>
-              <javadocFormatter>NONE</javadocFormatter>
-              <style>GOOGLE</style>
-              <filterModified>true</filterModified>
-              <skip>false</skip>
-            </configuration>
+            <id>default-cli</id>
+            <phase>validate</phase>
             <goals>
-              <goal>format</goal>
+              <goal>check</goal>
             </goals>
-            <phase>process-sources</phase>
           </execution>
         </executions>
       </plugin>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-/** Goal which generates openapi docs */
+/** Goal which generates openapi docs. */
 @Mojo(name = "openApiDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
 @Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
 public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
@@ -41,7 +41,7 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
-  /** Output directory for openapi docs */
+  /** Output directory for openapi docs. */
   @Parameter(
     defaultValue = "${project.build.directory}/openapi-docs",
     property = "endpoints.openApiDocDir",
@@ -57,6 +57,7 @@ public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.basePath", required = false)
   private String basePath;
 
+  @Override
   public void execute() throws MojoExecutionException {
     try {
       if (!openApiDocDir.exists() && !openApiDocDir.mkdirs()) {
