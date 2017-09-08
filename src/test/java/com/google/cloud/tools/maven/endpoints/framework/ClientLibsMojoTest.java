@@ -37,7 +37,8 @@ import org.junit.rules.TemporaryFolder;
 public class ClientLibsMojoTest {
 
   private static final String DEFAULT_HOSTNAME = "myapi.appspot.com";
-  private static final String DEFAULT_URL = "https://" + DEFAULT_HOSTNAME + "/_ah/api/";
+  private static final String DEFAULT_BASE_PATH = "/_ah/api";
+  private static final String DEFAULT_URL = "https://" + DEFAULT_HOSTNAME + DEFAULT_BASE_PATH + "/";
   private static final String DEFAULT_URL_PREFIX = "public static final String DEFAULT_ROOT_URL = ";
   private static final String DEFAULT_URL_VARIABLE =
       DEFAULT_URL_PREFIX + "\"" + DEFAULT_URL + "\";";
@@ -88,7 +89,6 @@ public class ClientLibsMojoTest {
             .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
             .build();
     buildAndVerify(testDir);
-
     String apiJavaFile =
         getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
     Assert.assertThat(
@@ -96,6 +96,24 @@ public class ClientLibsMojoTest {
     Assert.assertThat(
         apiJavaFile,
         JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com/_ah/api/\";"));
+  }
+
+  @Test
+  public void testBasePath() throws IOException, VerificationException, XmlPullParserException {
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
+            .build();
+    buildAndVerify(testDir);
+
+    String apiJavaFile =
+        getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    Assert.assertThat(
+        apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_BASE_PATH)));
+    Assert.assertThat(
+        apiJavaFile,
+        JUnitMatchers.containsString(
+            DEFAULT_URL_PREFIX + "\"https://" + DEFAULT_HOSTNAME + "/a/different/path/\";"));
   }
 
   private String getFileContentsInZip(File zipFile, String path) throws IOException {

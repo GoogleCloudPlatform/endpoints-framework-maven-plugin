@@ -53,6 +53,10 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.hostname", required = false)
   private String hostname;
 
+  /** Default basepath of the Endpoint Host. */
+  @Parameter(property = "endpoints.basepath", required = false)
+  private String basePath;
+
   @Override
   public void execute() throws MojoExecutionException {
     try {
@@ -76,6 +80,10 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);
+      }
+      if (!Strings.isNullOrEmpty(basePath)) {
+        params.add("-p");
+        params.add(basePath);
       }
       if (serviceClasses != null) {
         params.addAll(serviceClasses);
