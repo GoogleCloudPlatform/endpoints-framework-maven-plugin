@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
  */
 
 package com.google.cloud.tools.maven.endpoints.framework;
-
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -41,12 +40,13 @@ public class ClientLibsMojoTest {
   private static final String DEFAULT_BASE_PATH = "/_ah/api";
   private static final String DEFAULT_URL = "https://" + DEFAULT_HOSTNAME + DEFAULT_BASE_PATH + "/";
   private static final String DEFAULT_URL_PREFIX = "public static final String DEFAULT_ROOT_URL = ";
-  private static final String DEFAULT_URL_VARIABLE = DEFAULT_URL_PREFIX + "\"" + DEFAULT_URL + "\";";
+  private static final String DEFAULT_URL_VARIABLE =
+      DEFAULT_URL_PREFIX + "\"" + DEFAULT_URL + "\";";
   private static final String CLIENT_LIB_PATH = "target/client-libs/testApi-v1-java.zip";
-  private static final String API_JAVA_FILE_PATH = "testApi/src/main/java/com/example/testApi/TestApi.java";
+  private static final String API_JAVA_FILE_PATH =
+      "testApi/src/main/java/com/example/testApi/TestApi.java";
 
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
+  @Rule public TemporaryFolder tmpDir = new TemporaryFolder();
 
   private void buildAndVerify(File projectDir) throws VerificationException {
     Verifier verifier = new Verifier(projectDir.getAbsolutePath());
@@ -60,30 +60,42 @@ public class ClientLibsMojoTest {
     File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").build();
     buildAndVerify(testDir);
 
-    String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    String apiJavaFile =
+        getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
     Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_VARIABLE));
   }
 
   @Test
-  public void testApplicationId() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
+  public void testApplicationId()
+      throws IOException, VerificationException, XmlPullParserException {
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
     buildAndVerify(testDir);
 
-    String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
-    Assert.assertThat(apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
-    Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://maven-test.appspot.com/_ah/api/\";"));
+    String apiJavaFile =
+        getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    Assert.assertThat(
+        apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
+    Assert.assertThat(
+        apiJavaFile,
+        JUnitMatchers.containsString(
+            DEFAULT_URL_PREFIX + "\"https://maven-test.appspot.com/_ah/api/\";"));
   }
 
   @Test
   public void testHostname() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
-        .build();
+    File testDir =
+            new TestProject(tmpDir.getRoot(), "/projects/server")
+                    .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
+                    .build();
     buildAndVerify(testDir);
-
-    String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
-    Assert.assertThat(apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
-    Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com" + DEFAULT_BASE_PATH + "/\";"));
+    String apiJavaFile =
+            getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    Assert.assertThat(
+            apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
+    Assert.assertThat(
+            apiJavaFile,
+            JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com/_ah/api/\";"));
   }
 
   @Test

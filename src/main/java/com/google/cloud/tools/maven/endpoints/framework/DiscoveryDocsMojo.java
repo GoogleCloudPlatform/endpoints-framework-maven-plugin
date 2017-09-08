@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Google Inc. All Right Reserved.
+ * Copyright (c) 2016 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-/**
- * Goal which generates discovery docs
- */
+/** Goal which generates discovery docs. */
 @Mojo(name = "discoveryDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
 @Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
 public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
@@ -43,16 +41,15 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
-  /**
-   * Output directory for discovery docs
-   */
-  @Parameter(defaultValue = "${project.build.directory}/discovery-docs",
-             property = "endpoints.discoveryDocDir", required = true)
+  /** Output directory for discovery docs. */
+  @Parameter(
+    defaultValue = "${project.build.directory}/discovery-docs",
+    property = "endpoints.discoveryDocDir",
+    required = true
+  )
   private File discoveryDocDir;
 
-  /**
-   * Default hostname of the Endpoint Host.
-   */
+  /** Default hostname of the Endpoint Host. */
   @Parameter(property = "endpoints.hostname", required = false)
   private String hostname;
 
@@ -62,6 +59,7 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.basepath", required = false)
   private String basePath;
 
+  @Override
   public void execute() throws MojoExecutionException {
     try {
       if (!discoveryDocDir.exists() && !discoveryDocDir.mkdirs()) {
@@ -71,11 +69,16 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
       String classpath = Joiner.on(File.pathSeparator).join(project.getRuntimeClasspathElements());
       classpath += File.pathSeparator + classesDir;
 
-      List<String> params = new ArrayList<>(Arrays.asList(
-          GetDiscoveryDocAction.NAME,
-          "-o", discoveryDocDir.getAbsolutePath(),
-          "-cp", classpath,
-          "-w", webappDir.getAbsolutePath()));
+      List<String> params =
+          new ArrayList<>(
+              Arrays.asList(
+                  GetDiscoveryDocAction.NAME,
+                  "-o",
+                  discoveryDocDir.getAbsolutePath(),
+                  "-cp",
+                  classpath,
+                  "-w",
+                  webappDir.getAbsolutePath()));
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);
@@ -90,7 +93,6 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
 
       getLog().info("Endpoints Tool params : " + params.toString());
       new EndpointsTool().execute(params.toArray(new String[params.size()]));
-
 
     } catch (Exception e) {
       throw new MojoExecutionException("Endpoints Tool Error", e);

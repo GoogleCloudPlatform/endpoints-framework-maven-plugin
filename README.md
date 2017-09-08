@@ -1,4 +1,5 @@
 ![project status image](https://img.shields.io/badge/stability-experimental-orange.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.tools/endpoints-framework-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.tools/endpoints-framework-maven-plugin)
 # Endpoints Framework Maven plugin
 
 This Maven plugin provides goals and configurations to build Endpoints Framework projects.
@@ -40,7 +41,7 @@ The plugin exposes the following parameters for configuring server side goals
 #### Usage
 Make sure your web.xml is [configured to expose your endpoints](https://cloud.google.com/endpoints/docs/frameworks/java/required_files) correctly.
 
-No configuration paramters are required to run with default values
+No configuration parameters are required to run with default values
 ```
 $> mvn endpoints-framework:clientLibs
 $> mvn endpoints-framework:discoveryDocs
@@ -51,7 +52,7 @@ $> mvn endpoints-framework:discoveryDocs
 The plugin exposes the following client side goals
 * `generateSrc`
 
-The plugin exposes the following paramters for client side goals
+The plugin exposes the following parameters for client side goals
 * `generatedSrcDir` - The output directory of generated endpoints source
 * `discoveryDocs` - List of discovery docs to generate source from
 

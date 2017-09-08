@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,8 +86,9 @@ public class TestProject {
   }
 
   private File copyProject() throws IOException {
-    File projectRoot = ResourceExtractor
-        .extractResourcePath(TestProject.class, projectPathInResources, testDir, true);
+    File projectRoot =
+        ResourceExtractor.extractResourcePath(
+            TestProject.class, projectPathInResources, testDir, true);
 
     File pom = new File(projectRoot, "pom.xml");
     String pomContents = FileUtils.fileRead(pom);
@@ -109,7 +110,9 @@ public class TestProject {
   private void injectApplicationId(File projectRoot, String application) throws IOException {
     File app = new File(projectRoot, "src/main/webapp/WEB-INF/appengine-web.xml");
     String appContents = FileUtils.fileRead(app);
-    appContents = appContents.replaceAll("<!--application-->", "<application>" + application + "</application>");
+    appContents =
+        appContents.replaceAll(
+            "<!--application-->", "<application>" + application + "</application>");
     FileUtils.fileWrite(app, appContents);
   }
 }

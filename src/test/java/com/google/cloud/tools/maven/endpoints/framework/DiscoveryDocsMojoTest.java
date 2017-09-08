@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
  */
 
 package com.google.cloud.tools.maven.endpoints.framework;
-
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -39,8 +38,7 @@ public class DiscoveryDocsMojoTest {
   private static final String DEFAULT_URL = "https://" + DEFAULT_HOSTNAME + DEFAULT_BASE_PATH + "/";
   private static final String DISCOVERY_DOC_PATH = "target/discovery-docs/testApi-v1-rest.discovery";
 
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
+  @Rule public TemporaryFolder tmpDir = new TemporaryFolder();
 
   private void buildAndVerify(File projectDir) throws VerificationException {
     Verifier verifier = new Verifier(projectDir.getAbsolutePath());
@@ -61,23 +59,22 @@ public class DiscoveryDocsMojoTest {
   @Test
   public void testApplicationId()
       throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .applicationId("maven-test")
-        .build();
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
     buildAndVerify(testDir);
 
     String discovery = Files.toString(new File(testDir, DISCOVERY_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(discovery, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL)));
-    Assert.assertThat(discovery,
-        JUnitMatchers.containsString("https://maven-test.appspot.com/_ah/api"));
-
+    Assert.assertThat(
+        discovery, JUnitMatchers.containsString("https://maven-test.appspot.com/_ah/api"));
   }
 
   @Test
   public void testHostname() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
-        .build();
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
+            .build();
     buildAndVerify(testDir);
 
     String discovery = Files.toString(new File(testDir, DISCOVERY_DOC_PATH), Charsets.UTF_8);
@@ -96,6 +93,4 @@ public class DiscoveryDocsMojoTest {
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_BASE_PATH)));
     Assert.assertThat(openapi, JUnitMatchers.containsString("\"basePath\": \"/a/different/path/"));
   }
-
 }
-
