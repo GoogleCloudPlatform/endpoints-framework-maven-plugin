@@ -54,9 +54,7 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.hostname")
   private String hostname;
 
-  /**
-   * Default basePath of the Endpoint Host.
-   */
+  /** Default basePath of the Endpoint Host. */
   @Parameter(property = "endpoints.basePath")
   private String basePath;
 

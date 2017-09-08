@@ -53,9 +53,7 @@ public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(property = "endpoints.hostname", required = false)
   private String hostname;
 
-  /**
-   * Default basepath of the Endpoint Host.
-   */
+  /** Default basepath of the Endpoint Host. */
   @Parameter(property = "endpoints.basepath", required = false)
   private String basePath;
 

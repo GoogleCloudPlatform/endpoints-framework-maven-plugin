@@ -36,7 +36,8 @@ public class DiscoveryDocsMojoTest {
   private static final String DEFAULT_HOSTNAME = "myapi.appspot.com";
   private static final String DEFAULT_BASE_PATH = "/_ah/api";
   private static final String DEFAULT_URL = "https://" + DEFAULT_HOSTNAME + DEFAULT_BASE_PATH + "/";
-  private static final String DISCOVERY_DOC_PATH = "target/discovery-docs/testApi-v1-rest.discovery";
+  private static final String DISCOVERY_DOC_PATH =
+      "target/discovery-docs/testApi-v1-rest.discovery";
 
   @Rule public TemporaryFolder tmpDir = new TemporaryFolder();
 
@@ -84,9 +85,10 @@ public class DiscoveryDocsMojoTest {
 
   @Test
   public void testBasePath() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
-        .build();
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
+            .build();
     buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, DISCOVERY_DOC_PATH), Charsets.UTF_8);

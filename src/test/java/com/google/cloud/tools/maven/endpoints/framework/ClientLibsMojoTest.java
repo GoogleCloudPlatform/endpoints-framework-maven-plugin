@@ -85,29 +85,35 @@ public class ClientLibsMojoTest {
   @Test
   public void testHostname() throws IOException, VerificationException, XmlPullParserException {
     File testDir =
-            new TestProject(tmpDir.getRoot(), "/projects/server")
-                    .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
-                    .build();
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
+            .build();
     buildAndVerify(testDir);
     String apiJavaFile =
-            getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+        getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
     Assert.assertThat(
-            apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
+        apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_URL_VARIABLE)));
     Assert.assertThat(
-            apiJavaFile,
-            JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com/_ah/api/\";"));
+        apiJavaFile,
+        JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://my.hostname.com/_ah/api/\";"));
   }
 
   @Test
   public void testBasePath() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
-        .build();
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
+            .build();
     buildAndVerify(testDir);
 
-    String apiJavaFile = getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
-    Assert.assertThat(apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_BASE_PATH)));
-    Assert.assertThat(apiJavaFile, JUnitMatchers.containsString(DEFAULT_URL_PREFIX + "\"https://" + DEFAULT_HOSTNAME + "/a/different/path/\";"));
+    String apiJavaFile =
+        getFileContentsInZip(new File(testDir, CLIENT_LIB_PATH), API_JAVA_FILE_PATH);
+    Assert.assertThat(
+        apiJavaFile, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_BASE_PATH)));
+    Assert.assertThat(
+        apiJavaFile,
+        JUnitMatchers.containsString(
+            DEFAULT_URL_PREFIX + "\"https://" + DEFAULT_HOSTNAME + "/a/different/path/\";"));
   }
 
   private String getFileContentsInZip(File zipFile, String path) throws IOException {
