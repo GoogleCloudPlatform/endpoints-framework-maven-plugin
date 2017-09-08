@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Google Inc. All Right Reserved.
+ * Copyright (c) 2016 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,21 +24,19 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 public abstract class AbstractEndpointsWebAppMojo extends AbstractMojo {
 
-  /**
-   * Location of compile java classes
-   */
+  /** Location of compile java classes. */
   @Parameter(defaultValue = "${project.build.outputDirectory}", readonly = true)
   protected File classesDir;
 
-  /**
-   * List of names of service classes (endpoints classes)
-   */
+  /** List of names of service classes (endpoints classes). */
   @Parameter(property = "endpoints.serviceClasses", required = false)
   protected List<String> serviceClasses;
 
-  /**
-   * Location of java web application "webapp" directory
-   */
-  @Parameter(defaultValue = "${basedir}/src/main/webapp", property = "endpoints.webappDir", required = true)
+  /** Location of java web application "webapp" directory. */
+  @Parameter(
+    defaultValue = "${basedir}/src/main/webapp",
+    property = "endpoints.webappDir",
+    required = true
+  )
   protected File webappDir;
 }

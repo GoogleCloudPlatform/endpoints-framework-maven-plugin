@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,10 @@ import org.junit.rules.TemporaryFolder;
 public class OpenApiDocsMojoTest {
 
   private static final String DEFAULT_HOSTNAME = "myapi.appspot.com";
+  private static final String DEFAULT_BASE_PATH = "/_ah/api";
   private static final String OPEN_API_DOC_PATH = "target/openapi-docs/openapi.json";
 
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
+  @Rule public TemporaryFolder tmpDir = new TemporaryFolder();
 
   private void buildAndVerify(File projectDir) throws VerificationException {
     Verifier verifier = new Verifier(projectDir.getAbsolutePath());
@@ -56,21 +56,23 @@ public class OpenApiDocsMojoTest {
   }
 
   @Test
-  public void testApplicationId() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
+  public void testApplicationId()
+      throws IOException, VerificationException, XmlPullParserException {
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server").applicationId("maven-test").build();
     buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
     Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_HOSTNAME)));
     Assert.assertThat(openapi, JUnitMatchers.containsString("maven-test.appspot.com"));
-
   }
 
   @Test
   public void testHostname() throws IOException, VerificationException, XmlPullParserException {
-    File testDir = new TestProject(tmpDir.getRoot(), "/projects/server")
-        .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
-        .build();
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><hostname>my.hostname.com</hostname></configuration>")
+            .build();
     buildAndVerify(testDir);
 
     String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
@@ -78,5 +80,16 @@ public class OpenApiDocsMojoTest {
     Assert.assertThat(openapi, JUnitMatchers.containsString("my.hostname.com"));
   }
 
-}
+  @Test
+  public void testBasePath() throws IOException, VerificationException, XmlPullParserException {
+    File testDir =
+        new TestProject(tmpDir.getRoot(), "/projects/server")
+            .configuration("<configuration><basePath>/a/different/path</basePath></configuration>")
+            .build();
+    buildAndVerify(testDir);
 
+    String openapi = Files.toString(new File(testDir, OPEN_API_DOC_PATH), Charsets.UTF_8);
+    Assert.assertThat(openapi, CoreMatchers.not(JUnitMatchers.containsString(DEFAULT_BASE_PATH)));
+    Assert.assertThat(openapi, JUnitMatchers.containsString("\"basePath\": \"/a/different/path\""));
+  }
+}

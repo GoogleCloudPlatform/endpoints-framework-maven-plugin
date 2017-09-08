@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Google Inc. All Right Reserved.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,7 @@ import org.junit.rules.TemporaryFolder;
 
 public class EndpointsGenSrcMojoTest {
 
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
+  @Rule public TemporaryFolder tmpDir = new TemporaryFolder();
 
   @Test
   public void testClientGeneratedSourceCreation()
@@ -40,6 +39,7 @@ public class EndpointsGenSrcMojoTest {
     Verifier verifier = new Verifier(testDir.getAbsolutePath());
     verifier.executeGoals(Collections.singletonList("compile"));
     verifier.verifyErrorFreeLog();
-    verifier.assertFilePresent("target/generated-sources/endpoints/com/example/testApi/TestApi.java");
+    verifier.assertFilePresent(
+        "target/generated-sources/endpoints/com/example/testApi/TestApi.java");
   }
 }

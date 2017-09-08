@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Google Inc. All Right Reserved.
+ * Copyright (c) 2016 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,9 +34,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-/**
- * Maven goal to generate client libraries (as zips)
- */
+/** Maven goal to generate client libraries (as zips). */
 @Mojo(name = "clientLibs", requiresDependencyResolution = ResolutionScope.COMPILE)
 @Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
 public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
@@ -44,35 +42,42 @@ public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
   @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
-  /**
-   * Output directory for client libraries
-   */
-  @Parameter(defaultValue = "${project.build.directory}/client-libs",
-             property = "endpoints.clientLibDir", required = true)
+  /** Output directory for client libraries. */
+  @Parameter(
+    defaultValue = "${project.build.directory}/client-libs",
+    property = "endpoints.clientLibDir",
+    required = true
+  )
   private File clientLibDir;
 
-  /**
-   * Default hostname of the Endpoint Host.
-   */
+  /** Default hostname of the Endpoint Host. */
   @Parameter(property = "endpoints.hostname")
   private String hostname;
 
+  @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (!clientLibDir.exists() && !clientLibDir.mkdirs()) {
       throw new MojoExecutionException(
           "Failed to create output directory: " + clientLibDir.getAbsolutePath());
     }
     try {
-      String classpath = Joiner.on(File.pathSeparator)
-          .join(project.getCompileClasspathElements(), classesDir);
+      String classpath = Joiner.on(File.pathSeparator).join(project.getRuntimeClasspathElements());
+      classpath += File.pathSeparator + classesDir;
 
-      List<String> params = new ArrayList<>(Arrays.asList(
-          GetClientLibAction.NAME,
-          "-o", clientLibDir.getAbsolutePath(),
-          "-cp", classpath,
-          "-l", "java",
-          "-bs", "maven",
-          "-w", webappDir.getAbsolutePath()));
+      List<String> params =
+          new ArrayList<>(
+              Arrays.asList(
+                  GetClientLibAction.NAME,
+                  "-o",
+                  clientLibDir.getAbsolutePath(),
+                  "-cp",
+                  classpath,
+                  "-l",
+                  "java",
+                  "-bs",
+                  "maven",
+                  "-w",
+                  webappDir.getAbsolutePath()));
       if (!Strings.isNullOrEmpty(hostname)) {
         params.add("-h");
         params.add(hostname);

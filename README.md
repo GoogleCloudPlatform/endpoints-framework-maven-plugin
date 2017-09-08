@@ -1,4 +1,5 @@
 ![project status image](https://img.shields.io/badge/stability-experimental-orange.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.tools/endpoints-framework-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.tools/endpoints-framework-maven-plugin)
 # Endpoints Framework Maven plugin
 
 This Maven plugin provides goals and configurations to build Endpoints Framework projects.
@@ -17,7 +18,7 @@ In your Maven App Engine Java app, add the following plugin to your pom.xml:
 <plugin>
   <groupId>com.google.cloud.tools</groupId>
   <artifactId>endpoints-framework-maven-plugin</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </plugin>
 ```
 All goals are prefixed with `endpoints-framework`
