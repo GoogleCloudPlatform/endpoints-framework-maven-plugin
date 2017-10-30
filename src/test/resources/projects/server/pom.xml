@@ -16,7 +16,7 @@
     <appengine-maven-plugin.version>1.3.0</appengine-maven-plugin.version>
     <appengine-dependencies.version>1.9.51</appengine-dependencies.version>
     <endpoints-framework-maven-plugin.version>@@PluginVersion@@</endpoints-framework-maven-plugin.version>
-    <endpoints-framework.version>2.0.7</endpoints-framework.version>
+    <endpoints-framework.version>2.0.9</endpoints-framework.version>
   </properties>
 
   <dependencies>
