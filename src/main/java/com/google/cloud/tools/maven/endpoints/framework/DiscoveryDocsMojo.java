@@ -34,8 +34,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /** Goal which generates discovery docs. */
-@Mojo(name = "discoveryDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
-@Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
+@Mojo(name = "discoveryDocs", requiresDependencyResolution = ResolutionScope.COMPILE, defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
 public class DiscoveryDocsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)
