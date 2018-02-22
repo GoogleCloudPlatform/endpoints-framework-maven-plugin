@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.zip.ZipFile;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
@@ -50,7 +51,7 @@ public class ClientLibsMojoTest {
 
   private void buildAndVerify(File projectDir) throws VerificationException {
     Verifier verifier = new Verifier(projectDir.getAbsolutePath());
-    verifier.executeGoal("endpoints-framework:clientLibs");
+    verifier.executeGoals(Arrays.asList("compile", "endpoints-framework:clientLibs"));
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent(CLIENT_LIB_PATH);
   }
