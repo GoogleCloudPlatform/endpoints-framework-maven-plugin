@@ -43,9 +43,9 @@ The plugin exposes the following parameters for configuring server side goals
 Make sure your web.xml is [configured to expose your endpoints](https://cloud.google.com/endpoints/docs/frameworks/java/required_files) correctly.
 
 No configuration parameters are required to run with default values
-```
-$ mvn compile endpoints-framework:clientLibs
-$ mvn compile endpoints-framework:discoveryDocs
+```shell
+mvn compile endpoints-framework:clientLibs
+mvn compile endpoints-framework:discoveryDocs
 ```
 
 ## Client
@@ -96,6 +96,6 @@ source to compile
 ```
 
 Running compile should automatically include generated sources from discovery documents
-```
-$ mvn compile
+```shell
+mvn compile
 ```
