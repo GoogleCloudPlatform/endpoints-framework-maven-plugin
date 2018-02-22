@@ -44,8 +44,8 @@ Make sure your web.xml is [configured to expose your endpoints](https://cloud.go
 
 No configuration parameters are required to run with default values
 ```
-$> mvn endpoints-framework:clientLibs
-$> mvn endpoints-framework:discoveryDocs
+$ mvn compile endpoints-framework:clientLibs
+$ mvn compile endpoints-framework:discoveryDocs
 ```
 
 ## Client
@@ -97,5 +97,5 @@ source to compile
 
 Running compile should automatically include generated sources from discovery documents
 ```
-$> mvn compile
+$ mvn compile
 ```
