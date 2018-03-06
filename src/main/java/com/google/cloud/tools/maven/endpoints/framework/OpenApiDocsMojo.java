@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -34,8 +33,11 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /** Goal which generates openapi docs. */
-@Mojo(name = "openApiDocs", requiresDependencyResolution = ResolutionScope.COMPILE)
-@Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
+@Mojo(
+  name = "openApiDocs",
+  requiresDependencyResolution = ResolutionScope.COMPILE,
+  defaultPhase = LifecyclePhase.PREPARE_PACKAGE
+)
 public class OpenApiDocsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)

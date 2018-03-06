@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -35,8 +34,11 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /** Maven goal to generate client libraries (as zips). */
-@Mojo(name = "clientLibs", requiresDependencyResolution = ResolutionScope.COMPILE)
-@Execute(phase = LifecyclePhase.PREPARE_PACKAGE)
+@Mojo(
+  name = "clientLibs",
+  requiresDependencyResolution = ResolutionScope.COMPILE,
+  defaultPhase = LifecyclePhase.PREPARE_PACKAGE
+)
 public class ClientLibsMojo extends AbstractEndpointsWebAppMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)

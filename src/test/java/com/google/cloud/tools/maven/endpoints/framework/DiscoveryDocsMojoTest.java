@@ -21,6 +21,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -43,7 +44,7 @@ public class DiscoveryDocsMojoTest {
 
   private void buildAndVerify(File projectDir) throws VerificationException {
     Verifier verifier = new Verifier(projectDir.getAbsolutePath());
-    verifier.executeGoal("endpoints-framework:discoveryDocs");
+    verifier.executeGoals(Arrays.asList("compile", "endpoints-framework:discoveryDocs"));
     verifier.verifyErrorFreeLog();
     verifier.assertFilePresent(DISCOVERY_DOC_PATH);
   }
