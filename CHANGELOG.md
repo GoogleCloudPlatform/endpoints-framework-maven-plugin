@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+## 2.0.0
+### Changed
+- Endpoints goals no longer fork ([#52](https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin/pull/52))
+- Requires Java 8 ([#53](https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin/pull/53))
+- Updated endpoints-framework-tools to version 2.0.14 ([#53](https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin/pull/53))
+
 ## 1.0.3
 ### Changed
 - Updated endpoints-framework-tools to version 2.0.9 ([#44](https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin/pull/44))
