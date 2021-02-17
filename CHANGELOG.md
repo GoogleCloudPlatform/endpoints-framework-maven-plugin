@@ -8,7 +8,11 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-## 2.0.0
+## 2.1.0
+### Changed
+- Updated endpoints-framework-tools to version 2.2.2 ([#68](https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin/pull/68))
+
+## 2.0.1
 ### Changed
 - Updated endpoints-framework-tools to version 2.2.0 ([#58](https://github.com/GoogleCloudPlatform/endpoints-framework-maven-plugin/pull/58))
 
